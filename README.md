@@ -104,9 +104,11 @@ MIT © 2026 Zeus Insurance Team
 🤝 Contacts
 GitHub: igor-vii/zeus-insurance
 
-Telegram: (add your contact)
+Telegram: @IvanovVII
 
-Website: (frontend link or landing page)
+Website: https://zeus-insurance--zeusinsurance.replit.app
+
+zeusinsurance@mail.ru
 
 ⭐ If you find this project interesting — star it on GitHub!
 # ⚡ Zeus Insurance
@@ -214,8 +216,10 @@ MIT © 2026 Zeus Insurance Team
 🤝 Контакты
 GitHub: igor-vii/zeus-insurance
 
-Telegram: (добавьте ваш контакт)
+Telegram: @IvanovVII
 
-Сайт: (ссылка на фронтенд или лендинг)
+Website: https://zeus-insurance--zeusinsurance.replit.app
+
+zeusinsurance@mail.ru
 
 ⭐ Если вам интересен проект — поставьте звезду на GitHub!
