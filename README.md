@@ -1,45 +1,88 @@
+# ⚡ Zeus Insurance – Decentralized Insurance Protocol for AI Agents
 
-# ⚡ Zeus Insurance
+**Zeus Insurance** protects AI agents from financial losses caused by API and service failures. When a seller fails to deliver, the buyer receives automatic compensation from the protocol's reserve fund.
 
-**Decentralized insurance protocol for AI agents.**
-
-Zeus Insurance allows buyers of APIs and digital services to protect their payments against seller failures. If the seller fails to deliver within the agreed time, the buyer receives compensation from the protocol's reserve fund.
-
-The protocol runs on **Base Sepolia** and uses **USDC** for settlements.
+🚀 **Live on Base Sepolia** – ready for testing and integration.
 
 ---
 
-## 🎯 Problem & Solution
+## 🎯 The Problem
 
-**Problem:** AI agents increasingly pay for API access, data, and compute. But sellers may fail to deliver — money is deducted, results are not received. Manual refunds are complex, and trust in the M2M economy is low.
+AI agents increasingly pay for API calls, data, and compute. But sellers may fail to respond — money is deducted, the agent receives nothing. Manual refunds are slow and require trust.
 
-**Solution:** Zeus Insurance is a smart contract that allows a buyer to insure a transaction for a small percentage (premium). If the seller does not respond within the specified time, the buyer receives compensation.
-
----
-
-## 📦 Repository Contents
-
-- **`contracts/`** — `ZeusInsurance.sol` smart contract (Solidity, OpenZeppelin)
-- **`frontend/`** — React interface for interacting with the contract (ethers.js, Tailwind)
-- **`scripts/`** — deployment and testing scripts
-- **`test/`** — unit tests for the contract (Hardhat)
+**Zeus solves this** by providing a trustless, on-chain insurance layer for agent-to-agent payments.
 
 ---
 
-## 🛠 Tech Stack
+## 💡 How It Works
 
-| Component        | Technologies |
-|------------------|--------------|
-| Smart Contract   | Solidity 0.8.24, OpenZeppelin (ReentrancyGuard, Ownable) |
-| Testnet          | Base Sepolia (Ethereum L2) |
-| Token            | USDC (address: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`) |
-| Frontend         | React, ethers.js, Tailwind CSS |
-| Development      | Hardhat, TypeScript, pnpm |
-| Hosting          | Replit (frontend), Netlify (optional) |
+1. **Buy Insurance** – The buyer pays a small premium (7–25% of the transaction amount) to insure an API call.
+2. **Timeout** – If the seller does not respond within the specified time, the buyer becomes eligible for compensation.
+3. **Claim Payout** – The buyer submits a claim, and the protocol automatically pays compensation from the reserve fund.
+
+**Key features:**
+- Fully on-chain, transparent, and auditable.
+- Smart escrow logic ensures trustless execution.
+- Premiums are pooled in a reserve fund to guarantee payouts.
+- No central authority — everything is governed by smart contracts.
 
 ---
 
-## 🚀 Installation & Setup
+## 🛠️ Technology Stack
+
+| Component | Technology |
+|-----------|------------|
+| Smart Contracts | Solidity 0.8.24, OpenZeppelin v5 |
+| Testnet | Base Sepolia (L2 on Ethereum) |
+| Token | USDC (6 decimals) |
+| Frontend | React, ethers.js, Tailwind CSS |
+| Development | Hardhat, TypeScript, pnpm |
+| Hosting | Replit / GitHub Codespaces / Netlify |
+
+---
+
+## 📦 Repository Structure
+zeus-insurance/
+├── contracts/
+│ ├── ZeusInsuranceV2.sol # Main insurance contract
+│ ├── ZeusReserveV2.sol # Reserve fund contract
+│ └── interfaces/
+│ └── IInsuranceContract.sol
+├── frontend/ # React interface
+├── scripts/ # Deployment scripts
+├── test/ # Unit tests
+├── hardhat.config.ts
+├── package.json
+└── README.md
+
+
+---
+
+## 🔗 Live Contracts (Base Sepolia)
+
+| Contract | Address | BaseScan |
+|----------|---------|----------|
+| **ZeusInsuranceV2** | `0xE0b89E0DEa7Fc7AEa7CEcC62a0A14d52de42Ce3b` | [View](https://sepolia.basescan.org/address/0xE0b89E0DEa7Fc7AEa7CEcC62a0A14d52de42Ce3b) |
+| **ZeusReserveV2** | `0xF5010Afe1856be1F447f962Dfa8AA30c2Ed19a47` | [View](https://sepolia.basescan.org/address/0xF5010Afe1856be1F447f962Dfa8AA30c2Ed19a47) |
+
+**USDC Address (Base Sepolia):** `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+
+---
+
+## 🏦 Reserve Fund
+
+The reserve fund holds USDC and is managed by the `ZeusReserveV2` contract.
+
+- **Premiums** automatically go to the reserve.
+- **Payouts** are made from the reserve when claims are approved.
+- **Daily payout limit:** 1,000 USDC (configurable).
+- **Minimum reserve threshold:** 100 USDC (configurable).
+
+This ensures that the protocol remains solvent and can handle multiple claims without external funding.
+
+---
+
+## 🚀 Getting Started
 
 ### 1. Clone the repository
 
@@ -50,168 +93,76 @@ cd zeus-insurance
 bash
 cd contracts
 npm install
-3. Set up environment variables
+3. Set up environment
 Create a .env file in the contracts folder:
 
 env
 PRIVATE_KEY=0xyour_private_key
-4. Compile the contract
+4. Compile contracts
 bash
 npx hardhat compile
 5. Run tests
 bash
 npx hardhat test
+All 30+ tests should pass.
+
 6. Deploy to Base Sepolia
 bash
-npx hardhat run scripts/deploy.js --network baseSepolia
-🖥 Frontend
-The interface is available at (if deployed):
-👉 zeus-insurance--zeusinsurance.replit.app
+npx hardhat run scripts/deploy-v2.js --network baseSepolia
+🖥️ Frontend
+The React frontend allows users to:
 
-Pages:
+Connect MetaMask (Base Sepolia).
 
-/ — dashboard: reserve, policy count, wallet status
+Buy insurance for API calls.
 
-/buy — buy insurance (select seller, amount, timeout, retries)
+View all policies and their status.
 
-/policies — your policies with claim payout functionality
+Submit claims and receive payouts.
 
-/admin — deposit / withdraw reserve (owner only)
+To run locally:
 
-🔗 Contract on BaseScan
-Contract address on Base Sepolia:
-
-text
-0xbe8B48f3ad126a8546BA895Cd42B72AA715C382B
-🔗 View on BaseScan
-
-📊 Economics
-Premium = 7% to 25% of transaction amount (depends on retries count)
-
-Payout = 100% of transaction amount (if seller fails to deliver)
-
-Reserve fund — funded by premiums, managed via multisig
-
-🧪 Testing
 bash
-cd contracts
-npx hardhat test
-All tests pass successfully (43 tests).
-
-📌 License
-MIT © 2026 Zeus Insurance Team
-
-🤝 Contacts
-GitHub: igor-vii/zeus-insurance
-
-Telegram: @IvanovVII
-
-Website: https://zeus-insurance--zeusinsurance.replit.app
-
-zeusinsurance@mail.ru
-
-⭐ If you find this project interesting — star it on GitHub!
-# ⚡ Zeus Insurance
-
-**Децентрализованный страховой протокол для AI-агентов.**
-
-Zeus Insurance позволяет покупателям API и цифровых услуг защитить свои платежи от сбоев продавцов. Если продавец не выполнил работу в срок — покупатель получает компенсацию из резервного фонда протокола.
-
-Протокол работает на **Base Sepolia** и использует **USDC** для расчётов.
-
----
-
-## 🎯 Проблема и решение
-
-**Проблема:** AI-агенты всё чаще платят за доступ к API, данным и вычислениям. Но продавцы могут не выполнить работу — деньги списаны, результат не получен. Ручные возвраты сложны, а доверия в M2M-экономике нет.
-
-**Решение:** Zeus Insurance — это смарт-контракт, который позволяет покупателю застраховать сделку за небольшой процент (премию). Если продавец не отвечает в течение заданного времени, покупатель получает компенсацию.
-
----
-
-## 📦 Что входит в репозиторий
-
-- **`contracts/`** — смарт-контракт `ZeusInsurance.sol` (Solidity, OpenZeppelin)
-- **`frontend/`** — React-интерфейс для взаимодействия с контрактом (ethers.js, Tailwind)
-- **`scripts/`** — скрипты для деплоя и тестирования
-- **`test/`** — юнит-тесты для контракта (Hardhat)
-
----
-
-## 🛠 Технологический стек
-
-| Компонент | Технологии |
-|-----------|------------|
-| Смарт-контракт | Solidity 0.8.24, OpenZeppelin (ReentrancyGuard, Ownable) |
-| Тестовая сеть | Base Sepolia (L2 на Ethereum) |
-| Токен | USDC (адрес: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`) |
-| Фронтенд | React, ethers.js, Tailwind CSS |
-| Разработка | Hardhat, TypeScript, pnpm |
-| Хостинг | Replit (фронтенд), Netlify (возможен) |
-
----
-
-## 🚀 Установка и запуск
-
-### 1. Клонируйте репозиторий
-
-```bash
-git clone https://github.com/igor-vii/zeus-insurance.git
-cd zeus-insurance
-2. Установите зависимости
-bash
-cd contracts
+cd frontend
 npm install
-3. Настройте переменные окружения
-Создайте файл .env в папке contracts:
+npm run dev
+Open http://localhost:3000 in your browser.
 
-env
-PRIVATE_KEY=0xваш_приватный_ключ
-4. Скомпилируйте контракт
-bash
-npx hardhat compile
-5. Запустите тесты
-bash
-npx hardhat test
-6. Разверните на Base Sepolia
-bash
-npx hardhat run scripts/deploy.js --network baseSepolia
-🖥 Фронтенд
-Интерфейс доступен по ссылке (если развёрнут):
-👉 zeus-insurance--zeusinsurance.replit.app
+🧪 Testing the Full Flow
+Fund the reserve – Send USDC to ZeusReserveV2 via the admin panel or script.
 
-Страницы:
+Buy insurance – Use the frontend to create a policy.
 
-/ — дашборд: резерв, количество полисов, статус кошелька
+Wait for timeout – Simulate seller failure by waiting for the timeout period.
 
-/buy — покупка страховки (выбор продавца, суммы, таймаута, количества попыток)
+Claim payout – Submit a claim and verify that compensation is sent from the reserve.
 
-/policies — список ваших полисов с возможностью подать заявку на выплату
+📊 Roadmap
+Phase	Status	Goal
+Smart Contracts	✅	ZeusInsuranceV2 + ZeusReserveV2 deployed and verified
+Frontend	✅	Basic interface for testing
+Reserve Fund	✅	USDC-based reserve with daily limits
+SDK (JavaScript)	🔜	Client library for developers
+Proxy API	🔜	HTTP endpoint for agent integration
+Mainnet Deployment	🔜	Move to Base Mainnet
+🤝 Contributing
+We welcome contributors! Here's how you can help:
 
-/admin — пополнение и вывод резерва (только владелец контракта)
+⭐ Star the repository on GitHub.
 
-🔗 Контракт на BaseScan
-Адрес контракта на Base Sepolia:
+🧪 Test the protocol on Base Sepolia and report issues.
 
-text
-0xbe8B48f3ad126a8546BA895Cd42B72AA715C382B
-🔗 Открыть на BaseScan
+💻 Contribute code (SDK, frontend improvements, additional tests).
 
-📊 Экономика
-Премия = от 7% до 25% от суммы сделки (зависит от количества попыток)
+📢 Spread the word to developers building AI agents.
 
-Выплата = 100% суммы сделки (если продавец не выполнил работу)
+To get started:
 
-Резервный фонд — пополняется из премий, управляется через мультисиг
+Fork the repository.
 
-🧪 Тестирование
-bash
-cd contracts
-npx hardhat test
-Все тесты проходят успешно (43 теста).
+Create a branch for your feature.
 
-📌 Лицензия
-MIT © 2026 Zeus Insurance Team
+Submit a Pull Request.
 
 🤝 Контакты
 GitHub: igor-vii/zeus-insurance
@@ -222,4 +173,13 @@ Website: https://zeus-insurance--zeusinsurance.replit.app
 
 zeusinsurance@mail.ru
 
-⭐ Если вам интересен проект — поставьте звезду на GitHub!
+⭐ Support the Project
+If you find this project useful:
+
+⭐ Star the repository on GitHub.
+
+🔗 Share it with developers building AI agents.
+
+💬 Join the discussion in our Telegram channel.
+
+Built for AI agents. Powered by smart contracts. Protected by Zeus. ⚡
